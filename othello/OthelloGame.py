@@ -26,6 +26,8 @@ class OthelloGame(np.ndarray):
         if isValidMove(self, self.current_player, position):
             executeMove(self, self.current_player, position)
             self.current_player=-self.current_player
+            y, x = position.copy()
+            print('Place at ' + '(' + str(y+1) + ',' + str(chr(x+ord('A'))) + ')')
         else:
             raise Exception('invalid move')
     
@@ -54,7 +56,15 @@ class OthelloGame(np.ndarray):
             print('---------- Result ----------', end='\n\n')
             self.showBoard()
             print()
-            print('Winner:', isEndGame(self))
+
+            winner = isEndGame(self)
+            if isEndGame(self) == WHITE:
+                winner = 'W'
+            elif isEndGame(self) == BLACK:
+                winner = 'B'
+            else:
+                winner = 'None'
+            print('Winner:', winner)
         return isEndGame(self)
     
     def showBoard(self):
@@ -73,7 +83,12 @@ class OthelloGame(np.ndarray):
                 if isValidMove(self, self.current_player, (i,j)):
                     print('{:^3}'.format('∎'), end='')
                 else:
-                    print('{:^3}'.format(self[i][j]), end='')
+                    ch = '_'
+                    if self[i][j] == WHITE:
+                        ch = 'W'
+                    elif self[i][j] == BLACK:
+                        ch = 'B'
+                    print('{:^3}'.format(ch), end='')
             print()
     
     def clone(self):
